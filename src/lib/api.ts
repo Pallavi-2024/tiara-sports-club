@@ -130,7 +130,7 @@ export async function getSmtpConfig() {
     configured: true,
     host: 'smtp.zoho.com',
     senderEmail: 'web@uniqtechsolutions.com',
-    adminRecipient: 'pallavi@uniqtechsolutions.com',
+    adminRecipient: 'mikir@uniqtechsolutions.com',
     primaryPort: 465,
     primaryProtocol: 'SSL',
     failoverPort: 587,
@@ -143,7 +143,7 @@ export async function testSmtpRelay(targetEmail?: string) {
     const res = await fetch('/api/inquiries/test-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ targetEmail: targetEmail || 'pallavi@uniqtechsolutions.com' })
+      body: JSON.stringify({ targetEmail: targetEmail || 'mikir@uniqtechsolutions.com' })
     });
     return await res.json();
   } catch (err: any) {

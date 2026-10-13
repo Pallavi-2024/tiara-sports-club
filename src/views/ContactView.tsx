@@ -123,7 +123,7 @@ export const ContactView: React.FC = () => {
                       Reference Code: <strong className="font-mono text-[#0A192F]">{submittedResult.referenceId}</strong>
                     </p>
                     <p className="text-xs text-slate-600">
-                      Our coaching and front desk team will reach out within 24 hours. Your details have been routed directly to club administration (pallavi@uniqtechsolutions.com) via Zoho SMTP.
+                      Our coaching and front desk team will reach out within 24 hours. Your details have been routed directly to club administration (mikir@uniqtechsolutions.com) via Zoho SMTP.
                     </p>
                     <button
                       onClick={() => setSubmittedResult(null)}
