@@ -26,7 +26,6 @@ export async function submitInquiry(payload: InquiryPayload): Promise<InquiryRes
     // Prepare FormSubmit payload
     const formData = new FormData();
     formData.append('_subject', `[Tiara Sports Club] ${payload.inquiryType} - ${payload.name}`);
-    formData.append('_cc', 'pallavi@uniqtechsolutions.com'); // CC to pallavi
     formData.append('_template', 'table'); // Use table format
     formData.append('_captcha', 'false'); // Disable captcha
     formData.append('Reference_Code', referenceCode);
@@ -39,8 +38,8 @@ export async function submitInquiry(payload: InquiryPayload): Promise<InquiryRes
     formData.append('Message', payload.message);
     formData.append('Submission_Time', new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }));
 
-    // Submit to FormSubmit (sends to mikir@uniqtechsolutions.com)
-    const res = await fetch('https://formsubmit.co/mikir@uniqtechsolutions.com', {
+    // Submit to FormSubmit (sends to pallavi@uniqtechsolutions.com)
+    const res = await fetch('https://formsubmit.co/pallavi@uniqtechsolutions.com', {
       method: 'POST',
       body: formData,
     });
@@ -60,7 +59,7 @@ export async function submitInquiry(payload: InquiryPayload): Promise<InquiryRes
         success: true,
         referenceId: referenceCode,
         message: 'Your inquiry has been registered with the sports help desk at Tiara Sports Club.',
-        deliveryDetails: `Dispatched to mikir@uniqtechsolutions.com (CC: pallavi@uniqtechsolutions.com) via FormSubmit`
+        deliveryDetails: `Dispatched to pallavi@uniqtechsolutions.com via FormSubmit`
       };
     } else {
       return {
@@ -153,7 +152,7 @@ export async function getSmtpConfig() {
     configured: true,
     host: 'smtp.zoho.com',
     senderEmail: 'web@uniqtechsolutions.com',
-    adminRecipient: 'mikir@uniqtechsolutions.com',
+    adminRecipient: 'pallavi@uniqtechsolutions.com',
     primaryPort: 465,
     primaryProtocol: 'SSL',
     failoverPort: 587,
@@ -166,7 +165,7 @@ export async function testSmtpRelay(targetEmail?: string) {
     const res = await fetch('/api/inquiries/test-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ targetEmail: targetEmail || 'mikir@uniqtechsolutions.com' })
+      body: JSON.stringify({ targetEmail: targetEmail || 'pallavi@uniqtechsolutions.com' })
     });
     return await res.json();
   } catch (err: any) {

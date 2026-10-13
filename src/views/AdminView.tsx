@@ -42,7 +42,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ navigate }) => {
   const [selectedInquiry, setSelectedInquiry] = useState<any | null>(null);
 
   // Zoho SMTP relay test state
-  const [testEmail, setTestEmail] = useState<string>('mikir@uniqtechsolutions.com');
+  const [testEmail, setTestEmail] = useState<string>('pallavi@uniqtechsolutions.com');
   const [testingSmtp, setTestingSmtp] = useState<boolean>(false);
   const [smtpResult, setSmtpResult] = useState<any | null>(null);
   const [smtpConfig, setSmtpConfig] = useState<any | null>(null);
@@ -634,7 +634,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ navigate }) => {
           <div className="p-3 bg-[#F8FAFC] border border-slate-200 rounded-sm">
             <div className="text-[10px] font-mono uppercase text-slate-400 font-bold">Admin Recipient</div>
             <div className="font-semibold text-slate-900 mt-1 break-all">
-              mikir@uniqtechsolutions.com
+              pallavi@uniqtechsolutions.com
             </div>
             <div className="text-[10px] text-[#C5A059] mt-0.5 font-medium">All Inquiries Routed Here</div>
           </div>
@@ -666,7 +666,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ navigate }) => {
             <li>User fills inquiry form on website (or contact page).</li>
             <li>Inquiry is archived safely with unique Reference ID in club database.</li>
             <li>Server connects to <strong>smtp.zoho.com:465 (SSL)</strong> using credentials (<span className="font-mono text-slate-800">web@uniqtechsolutions.com</span>). If network restricts 465, system auto-retries via <strong>Port 587 (TLS)</strong>.</li>
-            <li>Formatted inquiry notification with applicant contact & requirements is delivered directly to <strong>mikir@uniqtechsolutions.com</strong>.</li>
+            <li>Formatted inquiry notification with applicant contact & requirements is delivered directly to <strong>pallavi@uniqtechsolutions.com</strong>.</li>
           </ol>
         </div>
 
@@ -680,7 +680,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ navigate }) => {
               type="email"
               value={testEmail}
               onChange={(e) => setTestEmail(e.target.value)}
-              placeholder="Admin recipient email (default: mikir@uniqtechsolutions.com)"
+              placeholder="Admin recipient email (default: pallavi@uniqtechsolutions.com)"
               className="flex-1 bg-slate-50 border border-slate-300 rounded-sm px-3.5 py-2 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#0A192F]"
             />
             <button
@@ -694,7 +694,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ navigate }) => {
                   Testing Zoho Relay...
                 </>
               ) : (
-                'Send Test to mikir@uniqtechsolutions.com'
+                'Send Test to pallavi@uniqtechsolutions.com'
               )}
             </button>
           </div>

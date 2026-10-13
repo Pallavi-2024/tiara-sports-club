@@ -61,7 +61,7 @@ let inquiries: InquiryRecord[] = [
     status: 'In Review',
     createdAt: new Date(Date.now() - 3600000 * 5).toISOString(),
     adminNotes: 'Requested Saturday morning campus walkthrough. Assigned to Front Desk.',
-    smtpDetails: 'Dispatched to mikir@uniqtechsolutions.com via Zoho SMTP (Port 465 SSL)'
+    smtpDetails: 'Dispatched to pallavi@uniqtechsolutions.com via Zoho SMTP (Port 465 SSL)'
   },
   {
     id: 'inq-102',
@@ -75,7 +75,7 @@ let inquiries: InquiryRecord[] = [
     message: 'Inquiring for my 12-year-old daughter who is competing in state junior pickleball circuits. Looking for high-performance squad coaching.',
     status: 'New',
     createdAt: new Date(Date.now() - 3600000 * 2).toISOString(),
-    smtpDetails: 'Dispatched to mikir@uniqtechsolutions.com via Zoho SMTP (Port 465 SSL)'
+    smtpDetails: 'Dispatched to pallavi@uniqtechsolutions.com via Zoho SMTP (Port 465 SSL)'
   },
   {
     id: 'inq-103',
@@ -90,7 +90,7 @@ let inquiries: InquiryRecord[] = [
     status: 'Contacted',
     createdAt: new Date(Date.now() - 3600000 * 24).toISOString(),
     adminNotes: 'Quotation sent for executive gym coaching.',
-    smtpDetails: 'Dispatched to mikir@uniqtechsolutions.com via Zoho SMTP (Port 465 SSL)'
+    smtpDetails: 'Dispatched to pallavi@uniqtechsolutions.com via Zoho SMTP (Port 465 SSL)'
   }
 ];
 
@@ -103,7 +103,7 @@ const ZOHO_CONFIG = {
   host: process.env.SMTP_HOST || 'smtp.zoho.com',
   user: process.env.SMTP_USER || 'web@uniqtechsolutions.com',
   pass: process.env.SMTP_PASSWORD || 'Web@281989#',
-  adminRecipient: process.env.CONTACT_RECEIVER_EMAIL || 'mikir@uniqtechsolutions.com',
+  adminRecipient: process.env.CONTACT_RECEIVER_EMAIL || 'pallavi@uniqtechsolutions.com',
   senderName: 'Tiara Sports Club Inquiry Desk'
 };
 
@@ -354,7 +354,7 @@ Tiara Sports Club Vadodara
 Besides Red Coral greens, opposite Nayara petrol pump, sama-savli road Vadodara
 `;
 
-    // Dispatch exclusively to designated admin email (mikir@uniqtechsolutions.com)
+    // Dispatch exclusively to designated admin email (pallavi@uniqtechsolutions.com)
     const dispatchResult = await dispatchZohoEmail({
       to: adminEmail,
       replyTo: `${name.trim()} <${email.trim()}>`,
@@ -396,7 +396,7 @@ app.get('/api/smtp-config', (_req: Request, res: Response): void => {
     primaryProtocol: 'SSL',
     failoverPort: 587,
     failoverProtocol: 'TLS',
-    workflow: 'Inquiries sent directly from web@uniqtechsolutions.com to admin mikir@uniqtechsolutions.com with dual-port failover.'
+    workflow: 'Inquiries sent directly from web@uniqtechsolutions.com to admin pallavi@uniqtechsolutions.com with dual-port failover.'
   });
 });
 
