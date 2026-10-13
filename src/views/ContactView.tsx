@@ -180,7 +180,7 @@ export const ContactView: React.FC = () => {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="text-xs font-medium text-slate-700">Full Name *</label>
+                    <label className="text-xs font-medium text-slate-700">Full Name <span className="text-red-600">*</span></label>
                     <input
                       type="text"
                       required
@@ -192,7 +192,7 @@ export const ContactView: React.FC = () => {
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-xs font-medium text-slate-700">Email Address *</label>
+                    <label className="text-xs font-medium text-slate-700">Email Address <span className="text-red-600">*</span></label>
                     <input
                       type="email"
                       required
@@ -206,7 +206,7 @@ export const ContactView: React.FC = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="text-xs font-medium text-slate-700">Contact Phone *</label>
+                    <label className="text-xs font-medium text-slate-700">Contact Phone <span className="text-red-600">*</span></label>
                     <input
                       type="tel"
                       inputMode="numeric"
