@@ -209,10 +209,17 @@ export const ContactView: React.FC = () => {
                     <label className="text-xs font-medium text-slate-700">Contact Phone *</label>
                     <input
                       type="tel"
+                      inputMode="numeric"
                       required
                       placeholder="e.g., 9825012345"
                       value={formData.phone}
                       onChange={handlePhoneChange}
+                      onKeyPress={(e) => {
+                        // Block non-numeric keys
+                        if (!/[0-9]/.test(e.key)) {
+                          e.preventDefault();
+                        }
+                      }}
                       pattern="[0-9]{10}"
                       maxLength={10}
                       className={`w-full px-3 py-2 bg-slate-50 border rounded-sm text-xs text-slate-900 focus:outline-none ${
@@ -220,10 +227,14 @@ export const ContactView: React.FC = () => {
                       }`}
                     />
                     {phoneError && (
-                      <p className="text-xs text-red-600 mt-1">{phoneError}</p>
+                      <p className="text-xs text-red-600 mt-1 flex items-center gap-1">
+                        <span>⚠</span> {phoneError}
+                      </p>
                     )}
                     {formData.phone.length === 10 && !phoneError && (
-                      <p className="text-xs text-green-600 mt-1">✓ Valid phone number</p>
+                      <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
+                        <span>✓</span> Valid phone number
+                      </p>
                     )}
                   </div>
 

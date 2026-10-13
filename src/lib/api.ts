@@ -23,52 +23,121 @@ export async function submitInquiry(payload: InquiryPayload): Promise<InquiryRes
     // Generate reference code
     const referenceCode = `TSC-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
     
-    // Prepare FormSubmit payload
-    const formData = new FormData();
-    formData.append('_subject', `[Tiara Sports Club] ${payload.inquiryType} - ${payload.name}`);
-    formData.append('_template', 'table'); // Use table format
-    formData.append('_captcha', 'false'); // Disable captcha
-    formData.append('Reference_Code', referenceCode);
-    formData.append('Full_Name', payload.name);
-    formData.append('Email', payload.email);
-    formData.append('Phone', payload.phone);
-    formData.append('Inquiry_Type', payload.inquiryType);
-    formData.append('Sport_Discipline', payload.sport);
-    formData.append('Preferred_Time', payload.preferredTime);
-    formData.append('Message', payload.message);
-    formData.append('Submission_Time', new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }));
+    // Create custom HTML email template matching your design
+    const emailHTML = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+  </style>
+</head>
+<body style="background:#f4f6f9; padding:24px; color:#1e293b;">
+  <div style="max-width:620px; margin:0 auto; background:#ffffff; border-radius:6px; border:1px solid #e2e8f0; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.05);">
+    <!-- Header Banner -->
+    <div style="background:#0A192F; border-bottom:4px solid #C5A059; padding:22px 28px;">
+      <h1 style="color:#ffffff; margin:0; font-size:22px; font-weight:800; letter-spacing:0.5px;">TIARA SPORTS CLUB</h1>
+      <p style="color:#C5A059; margin:4px 0 0; font-size:12px; text-transform:uppercase; letter-spacing:1.5px; font-weight:600;">
+        NEW OFFICIAL INQUIRY DESK NOTIFICATION
+      </p>
+    </div>
 
-    // Submit to FormSubmit (sends to pallavi@uniqtechsolutions.com)
-    const res = await fetch('https://formsubmit.co/pallavi@uniqtechsolutions.com', {
+    <!-- Body Content -->
+    <div style="padding:28px;">
+      <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:4px; padding:14px 18px; margin-bottom:22px;">
+        <span style="color:#64748B; font-size:11px; text-transform:uppercase; letter-spacing:1px; font-weight:700;">INQUIRY REFERENCE ID</span>
+        <div style="color:#0A192F; font-size:18px; font-family:monospace; font-weight:700; margin-top:2px;">
+          ${referenceCode}
+        </div>
+      </div>
+
+      <table style="width:100%; border-collapse:collapse; margin-bottom:24px; font-size:13px;">
+        <tr style="border-bottom:1px solid #F1F5F9;">
+          <td style="padding:10px 0; color:#64748B; width:140px; font-weight:600;">Applicant Name:</td>
+          <td style="padding:10px 0; font-weight:700; color:#0F172A; font-size:14px;">${payload.name}</td>
+        </tr>
+        <tr style="border-bottom:1px solid #F1F5F9;">
+          <td style="padding:10px 0; color:#64748B; font-weight:600;">Email Address:</td>
+          <td style="padding:10px 0;"><a href="mailto:${payload.email}" style="color:#0A192F; font-weight:600; text-decoration:underline;">${payload.email}</a></td>
+        </tr>
+        <tr style="border-bottom:1px solid #F1F5F9;">
+          <td style="padding:10px 0; color:#64748B; font-weight:600;">Telephone:</td>
+          <td style="padding:10px 0;"><a href="tel:${payload.phone}" style="color:#0F172A; font-weight:600; text-decoration:none;">${payload.phone}</a></td>
+        </tr>
+        <tr style="border-bottom:1px solid #F1F5F9;">
+          <td style="padding:10px 0; color:#64748B; font-weight:600;">Inquiry Category:</td>
+          <td style="padding:10px 0; color:#0A192F; font-weight:700;">${payload.inquiryType}</td>
+        </tr>
+        <tr style="border-bottom:1px solid #F1F5F9;">
+          <td style="padding:10px 0; color:#64748B; font-weight:600;">Sport / Arena:</td>
+          <td style="padding:10px 0; color:#C5A059; font-weight:700;">${payload.sport}</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 0; color:#64748B; font-weight:600;">Preferred Timing:</td>
+          <td style="padding:10px 0; color:#334155; font-weight:600;">${payload.preferredTime}</td>
+        </tr>
+      </table>
+
+      <div style="background:#F8FAFC; border-left:4px solid #C5A059; padding:16px 18px; border-radius:3px;">
+        <strong style="color:#0F172A; font-size:12px; text-transform:uppercase; letter-spacing:0.8px; display:block; margin-bottom:6px;">APPLICANT STATEMENT / REQUIREMENTS:</strong>
+        <p style="margin:0; font-size:13.5px; line-height:1.6; color:#334155; white-space:pre-wrap;">${payload.message}</p>
+      </div>
+    </div>
+
+    <!-- Footer Information -->
+    <div style="background:#0A192F; color:#94A3B8; padding:18px 28px; font-size:11px; line-height:1.6;">
+      <strong style="color:#ffffff;">Tiara Sports Club Vadodara</strong><br/>
+      Tiara Sports Club, Besides Red Coral greens, opposite Nayara petrol pump, sama-savli road Vadodara<br/>
+      Received: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
+    </div>
+  </div>
+</body>
+</html>
+    `;
+
+    // Submit to Web3Forms with custom HTML
+    const formData = new FormData();
+    formData.append('access_key', 'YOUR_WEB3FORMS_KEY'); // Get free key from web3forms.com
+    formData.append('subject', `[Tiara Sports Club] ${payload.inquiryType} - ${payload.name} [#${referenceCode}]`);
+    formData.append('from_name', 'Tiara Sports Club Inquiry Desk');
+    formData.append('email', payload.email); // Reply-to address
+    formData.append('message', emailHTML);
+    formData.append('replyto', payload.email);
+    
+    const res = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       body: formData,
     });
 
     if (res.ok) {
-      // Save to local cache
-      const inquiry = {
-        id: `inq-${Date.now()}`,
-        referenceId: referenceCode,
-        ...payload,
-        status: 'New',
-        createdAt: new Date().toISOString()
-      };
-      saveToLocalCache(inquiry);
-      
-      return {
-        success: true,
-        referenceId: referenceCode,
-        message: 'Your inquiry has been registered with the sports help desk at Tiara Sports Club.',
-        deliveryDetails: `Dispatched to pallavi@uniqtechsolutions.com via FormSubmit`
-      };
-    } else {
-      return {
-        success: false,
-        referenceId: '',
-        message: '',
-        error: 'Failed to submit inquiry. Please try again.'
-      };
+      const data = await res.json();
+      if (data.success) {
+        // Save to local cache
+        const inquiry = {
+          id: `inq-${Date.now()}`,
+          referenceId: referenceCode,
+          ...payload,
+          status: 'New',
+          createdAt: new Date().toISOString()
+        };
+        saveToLocalCache(inquiry);
+        
+        return {
+          success: true,
+          referenceId: referenceCode,
+          message: 'Your inquiry has been registered with the sports help desk at Tiara Sports Club.',
+          deliveryDetails: `Dispatched to pallavi@uniqtechsolutions.com via Web3Forms`
+        };
+      }
     }
+    
+    return {
+      success: false,
+      referenceId: '',
+      message: '',
+      error: 'Failed to submit inquiry. Please try again.'
+    };
   } catch (error: any) {
     console.error('[API Client] Inquiry submission failed:', error);
     return {
