@@ -1,0 +1,6 @@
+{
+  "name": "Tiara Sport Club",
+  "description": "Premier athletic institution in Vadodara, Gujarat featuring championship facilities for Tennis, Badminton, Pickleball, and GYM.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
