@@ -20,31 +20,54 @@ const LOCAL_STORAGE_KEY = 'tiara_inquiries_cache';
 
 export async function submitInquiry(payload: InquiryPayload): Promise<InquiryResponse> {
   try {
-    const res = await fetch('/api/contact', {
+    // Generate reference code
+    const referenceCode = `TSC-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+    
+    // Prepare FormSubmit payload
+    const formData = new FormData();
+    formData.append('_subject', `[Tiara Sports Club] ${payload.inquiryType} - ${payload.name}`);
+    formData.append('_cc', 'pallavi@uniqtechsolutions.com'); // CC to pallavi
+    formData.append('_template', 'table'); // Use table format
+    formData.append('_captcha', 'false'); // Disable captcha
+    formData.append('Reference_Code', referenceCode);
+    formData.append('Full_Name', payload.name);
+    formData.append('Email', payload.email);
+    formData.append('Phone', payload.phone);
+    formData.append('Inquiry_Type', payload.inquiryType);
+    formData.append('Sport_Discipline', payload.sport);
+    formData.append('Preferred_Time', payload.preferredTime);
+    formData.append('Message', payload.message);
+    formData.append('Submission_Time', new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }));
+
+    // Submit to FormSubmit (sends to mikir@uniqtechsolutions.com)
+    const res = await fetch('https://formsubmit.co/mikir@uniqtechsolutions.com', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
+      body: formData,
     });
 
     if (res.ok) {
-      const data = await res.json();
-      saveToLocalCache(data.inquiry || {
+      // Save to local cache
+      const inquiry = {
         id: `inq-${Date.now()}`,
-        referenceId: data.referenceId,
+        referenceId: referenceCode,
         ...payload,
         status: 'New',
         createdAt: new Date().toISOString()
-      });
-      return data;
+      };
+      saveToLocalCache(inquiry);
+      
+      return {
+        success: true,
+        referenceId: referenceCode,
+        message: 'Your inquiry has been registered with the sports help desk at Tiara Sports Club.',
+        deliveryDetails: `Dispatched to mikir@uniqtechsolutions.com (CC: pallavi@uniqtechsolutions.com) via FormSubmit`
+      };
     } else {
-      const errData = await res.json().catch(() => ({}));
       return {
         success: false,
         referenceId: '',
         message: '',
-        error: errData.error || 'Server error occurred while submitting inquiry.'
+        error: 'Failed to submit inquiry. Please try again.'
       };
     }
   } catch (error: any) {
