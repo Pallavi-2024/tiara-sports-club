@@ -22,11 +22,39 @@ export const ContactView: React.FC = () => {
     deliveryDetails?: string;
     error?: string;
   } | null>(null);
+  const [phoneError, setPhoneError] = useState<string>('');
 
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Only allow numbers
+    const numbersOnly = value.replace(/\D/g, '');
+    
+    // Limit to 10 digits
+    const limited = numbersOnly.slice(0, 10);
+    
+    setFormData({ ...formData, phone: limited });
+    
+    // Validation feedback
+    if (limited.length === 0) {
+      setPhoneError('');
+    } else if (limited.length < 10) {
+      setPhoneError(`Please enter ${10 - limited.length} more digit${10 - limited.length > 1 ? 's' : ''}`);
+    } else if (limited.length === 10) {
+      setPhoneError('');
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Final phone validation before submit
+    if (formData.phone.length !== 10) {
+      setPhoneError('Phone number must be exactly 10 digits');
+      return;
+    }
+    
     setLoading(true);
     setSubmittedResult(null);
 
@@ -178,15 +206,25 @@ export const ContactView: React.FC = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="text-xs font-medium text-slate-700">Mobile / WhatsApp *</label>
+                    <label className="text-xs font-medium text-slate-700">Contact Phone *</label>
                     <input
                       type="tel"
                       required
-                      placeholder="+91 98250 XXXXX"
+                      placeholder="e.g., 9825012345"
                       value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-sm text-xs text-slate-900 focus:outline-none focus:border-[#0A192F]"
+                      onChange={handlePhoneChange}
+                      pattern="[0-9]{10}"
+                      maxLength={10}
+                      className={`w-full px-3 py-2 bg-slate-50 border rounded-sm text-xs text-slate-900 focus:outline-none ${
+                        phoneError ? 'border-red-400 focus:border-red-500' : 'border-slate-200 focus:border-[#0A192F]'
+                      }`}
                     />
+                    {phoneError && (
+                      <p className="text-xs text-red-600 mt-1">{phoneError}</p>
+                    )}
+                    {formData.phone.length === 10 && !phoneError && (
+                      <p className="text-xs text-green-600 mt-1">✓ Valid phone number</p>
+                    )}
                   </div>
 
                   <div className="space-y-1">
